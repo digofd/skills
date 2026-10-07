@@ -16,5 +16,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api --method POST "repos/${{ github.repository }}/merge-upstream" \
-            -f branch="${{ github.event.repository.default_branch }}"
+          default_branch="$(gh api "repos/$GITHUB_REPOSITORY" --jq .default_branch)"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/merge-upstream" \
+            -f branch="$default_branch"
